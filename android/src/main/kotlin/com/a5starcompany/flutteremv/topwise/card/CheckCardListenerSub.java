@@ -11,10 +11,11 @@ import android.util.Log;
 
 import com.a5starcompany.flutteremv.topwise.DeviceManager;
 import com.a5starcompany.flutteremv.topwise.app.PosApplication;
+import com.a5starcompany.flutteremv.topwise.emv.EmvManager;
+import com.a5starcompany.flutteremv.topwise.emv.EmvTransData;
 import com.a5starcompany.flutteremv.topwise.storage.ConsumeData;
 import com.topwise.cloudpos.aidl.emv.AidlCheckCardListener;
 import com.topwise.cloudpos.aidl.emv.AidlPboc;
-import com.topwise.cloudpos.aidl.emv.EmvTransData;
 import com.topwise.cloudpos.aidl.magcard.TrackData;
 
 
@@ -22,12 +23,12 @@ public class CheckCardListenerSub extends AidlCheckCardListener.Stub {
     private static final String TAG = "StringUtil.TAGPUBLIC" + CheckCardListenerSub.class.getSimpleName();
 
     private Context mContext;
-//    private EmvManager mPbocManager;
+    private EmvManager mPbocManager;
     private EmvTransData mEmvTransData;
     private AidlPboc mCheckCard = DeviceManager.getInstance().getPbocManager();
 
     public CheckCardListenerSub(Context context) {
-//        mPbocManager = EmvManager.getInstance();
+        mPbocManager = EmvManager.getInstance();
         mContext = context;
     }
 
@@ -73,9 +74,9 @@ public class CheckCardListenerSub extends AidlCheckCardListener.Stub {
     public void onFindICCard() throws RemoteException {
         Log.i(TAG, "onFindICCard()");
 //
-//        EmvTransDataSub emvTransDataSub = new EmvTransDataSub();
-//        mEmvTransData = emvTransDataSub.getEmvTransData(true);
-//        mPbocManager.startEmvProcess(mEmvTransData, new ICPbocStartListenerSub(mContext));
+        EmvTransDataSub emvTransDataSub = new EmvTransDataSub();
+        mEmvTransData = emvTransDataSub.getEmvTransData(true);
+        mPbocManager.startEmvProcess(mEmvTransData, new ICPbocStartListenerSub(mContext));
     }
 
     @Override

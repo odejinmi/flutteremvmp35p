@@ -54,6 +54,16 @@ public class ConsumeData {
     }
 
 
+    private byte[] unifiedPaymentIccData;
+
+    public void setUnifiedPaymentIccData(byte[] unifiedPaymentIccData) {
+        this.unifiedPaymentIccData = unifiedPaymentIccData;
+    }
+
+    public byte[] getUnifiedPaymentIccData() {
+        return this.unifiedPaymentIccData;
+    }
+
 
     public String getPinBlock() {
         return PINBLOCK;
