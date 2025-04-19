@@ -4,14 +4,16 @@ import android.content.Context
 import android.os.RemoteException
 import android.util.Log
 import com.a5starcompany.flutteremv.topwise.app.PosApplication
-import com.a5starcompany.flutteremv.topwise.emv.TransactionMonitor
-import com.a5starcompany.flutteremv.topwise.util.BCDASCII
-import com.a5starcompany.flutteremv.topwise.util.Format
 import com.a5starcompany.flutteremv.topwise.card.CardManager
+import com.a5starcompany.flutteremv.topwise.card.CardMoniterService
+import com.a5starcompany.flutteremv.topwise.card.CheckCardListenerSub
 import com.a5starcompany.flutteremv.topwise.emv.CardReadResult
 import com.a5starcompany.flutteremv.topwise.emv.CardReadState
 import com.a5starcompany.flutteremv.topwise.emv.Processor
+import com.a5starcompany.flutteremv.topwise.emv.TransactionMonitor
 import com.a5starcompany.flutteremv.topwise.printer.PrintTemplate
+import com.a5starcompany.flutteremv.topwise.util.BCDASCII
+import com.a5starcompany.flutteremv.topwise.util.Format
 import com.topwise.cloudpos.aidl.printer.AidlPrinter
 import com.topwise.cloudpos.aidl.printer.AidlPrinterListener
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> Unit) {
 
     private val printManager: AidlPrinter? = DeviceManager().getPrintManager()
+    val SEARCH_CARD_TIME: Int = 30000
 
     fun printDoc(template: PrintTemplate) {
         printManager?.addRuiImage(template.printBitmap, 0);
@@ -134,6 +137,11 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
 //                null as CardReadResult?
 //        ))
 //        cardConsumeEmitter.emit(CardReadState.Loading)
+//        mCheckCard.checkCard(
+//            true, true, true,
+//            CardMoniterService.SEARCH_CARD_TIME,
+//            CheckCardListenerSub(context)
+//        )
         CardManager.instance.initCardExceptionCallBack(object : CardManager.CardExceptionCallBack {
             override fun callBackTimeOut() {
                 callback.invoke(TransactionMonitor(

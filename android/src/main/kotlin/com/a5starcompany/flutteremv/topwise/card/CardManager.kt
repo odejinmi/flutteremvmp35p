@@ -246,13 +246,13 @@ class CardManager {
     fun startCardDealService(mContext: Context) {
         Log.d(TAG, "startCardDealService")
         c?.searching()
-//        val intent = Intent(mContext, CardMoniterService::class.java)
-//        mContext.startService(intent)
+        val intent = Intent(mContext, CardMoniterService::class.java)
+        mContext.startService(intent)
     }
 
     fun stopCardDealService(mContext: Context) {
-//        val intent = Intent(mContext, CardMoniterService::class.java)
-//        mContext.stopService(intent)
+        val intent = Intent(mContext, CardMoniterService::class.java)
+        mContext.stopService(intent)
     }
 
     fun startActivity(mContext: Context, bundle: Bundle?, cls: Class<*>?) {
