@@ -17,7 +17,7 @@ class MethodChannelFlutteremv extends FlutteremvPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('flutteremv');
-  final eventChannel = const EventChannel('topwisemp35pevent');
+  final eventChannel = const EventChannel('flutteremvevent');
 
   // @override
   Stream<dynamic> get stateStream {

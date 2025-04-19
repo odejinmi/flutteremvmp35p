@@ -28,11 +28,11 @@ class MethodCallHandlerImpl(
 
 
     init {
-        channel = MethodChannel(messenger!!, "topwisemp35p")
+        channel = MethodChannel(messenger!!, "flutteremv")
 
         channel?.setMethodCallHandler(this)
 
-        eventchannel = EventChannel(messenger, "topwisemp35pevent")
+        eventchannel = EventChannel(messenger, "flutteremvevent")
         eventchannel?.setStreamHandler(this)
 
         binding.addActivityResultListener(this)
