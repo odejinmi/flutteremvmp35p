@@ -1,5 +1,7 @@
-package com.a5starcompany.flutteremv.topwise.card;
+package com.a5starcompany.flutteremv.topwise.emv;
 
+
+import com.a5starcompany.flutteremv.topwise.card.CardType;
 
 public class EmvTransData{
     private int cardType = CardType.NONE;

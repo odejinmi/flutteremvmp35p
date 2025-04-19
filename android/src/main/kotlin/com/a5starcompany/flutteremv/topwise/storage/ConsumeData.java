@@ -2,6 +2,8 @@ package com.a5starcompany.flutteremv.topwise.storage;
 
 import android.util.Log;
 
+import com.a5starcompany.flutteremv.topwise.emv.CardReadResult;
+
 
 public class ConsumeData {
     private static final String TAG = ConsumeData.class.getSimpleName();
@@ -32,6 +34,16 @@ public class ConsumeData {
     private byte[] mKsnValue;
     private boolean mFallbackTxn;
     private static  ConsumeData instance;
+
+    private CardReadResult cardReadResult;
+
+    public void setCardReadResult(CardReadResult cardReadResult) {
+        this.cardReadResult = cardReadResult;
+    }
+
+    public CardReadResult getCardReadResult() {
+        return cardReadResult;
+    }
 
     private String PINBLOCK;
     public static ConsumeData getInstance() {

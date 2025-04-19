@@ -1,4 +1,4 @@
-package com.a5starcompany.flutteremv.emvreader.emv
+package com.a5starcompany.flutteremv.topwise.emv
 
 enum class CardReadState {
     Loading,

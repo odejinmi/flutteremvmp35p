@@ -2,6 +2,7 @@ package com.a5starcompany.flutteremv.topwise.card;
 
 
 import com.a5starcompany.flutteremv.topwise.app.PosApplication;
+import com.a5starcompany.flutteremv.topwise.emv.EmvTransData;
 import com.a5starcompany.flutteremv.topwise.storage.ConsumeData;
 
 public class EmvTransDataSub {

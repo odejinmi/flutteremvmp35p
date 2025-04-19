@@ -4,6 +4,18 @@ package com.a5starcompany.flutteremv.topwise.util;
 import com.a5starcompany.flutteremv.topwise.Utils;
 
 public class BCDASCII {
+
+
+    public static String hexToAscii(String hexStr) {
+        StringBuilder output = new StringBuilder("");
+
+        for (int i = 0; i < hexStr.length(); i += 2) {
+            String str = hexStr.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+        }
+
+        return output.toString();
+    }
     private static final String TAG = Utils.TAGPUBLIC + BCDASCII.class.getSimpleName();
 
     /** 

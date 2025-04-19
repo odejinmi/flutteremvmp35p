@@ -1,4 +1,4 @@
-package com.a5starcompany.flutteremv.emvreader.emv
+package com.a5starcompany.flutteremv.topwise.emv
 
 enum class Processor(var message: String) {
     ELKANAH("elkanah"), INTERSWITCH("interswitch"), NOT_SUPPORTED("this transaction is not supported!"), THREELINE(

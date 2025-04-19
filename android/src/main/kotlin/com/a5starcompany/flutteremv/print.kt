@@ -4,7 +4,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.a5starcompany.flutteremv.topwise.TopWiseDevice
-import com.a5starcompany.flutteremv.emvreader.printer.*
+import com.a5starcompany.flutteremv.topwise.printer.*
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import java.text.NumberFormat

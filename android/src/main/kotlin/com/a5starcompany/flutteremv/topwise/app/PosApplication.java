@@ -7,14 +7,14 @@ import android.util.Log;
 
 import com.a5starcompany.flutteremv.topwise.DeviceManager;
 import com.a5starcompany.flutteremv.topwise.storage.ConsumeData;
-//import com.a5starcompany.flutteremv.emvreader.DeviceTopUsdkServiceManager;
-//import com.a5starcompany.flutteremv.emvreader.card.CheckCardListenerSub;
-//import com.a5starcompany.flutteremv.emvreader.database.table.AidDaoImpl;
-//import com.a5starcompany.flutteremv.emvreader.database.table.DBManager;
-//import com.a5starcompany.flutteremv.emvreader.emv.EmvManager;
-//import com.a5starcompany.flutteremv.emvreader.util.StringUtil;
+//import com.a5starcompany.flutteremv.topwise.DeviceTopUsdkServiceManager;
+//import com.a5starcompany.flutteremv.topwise.card.CheckCardListenerSub;
+//import com.a5starcompany.flutteremv.topwise.database.table.AidDaoImpl;
+//import com.a5starcompany.flutteremv.topwise.database.table.DBManager;
+//import com.a5starcompany.flutteremv.topwise.emv.EmvManager;
+//import com.a5starcompany.flutteremv.topwise.util.StringUtil;
 import com.a5starcompany.flutteremv.topwise.util.BCDASCII;
-import com.a5starcompany.flutteremv.emvreader.emv.Processor;
+import com.a5starcompany.flutteremv.topwise.emv.Processor;
 import com.topwise.cloudpos.aidl.emv.AidlPboc;
 import com.topwise.cloudpos.aidl.pinpad.AidlPinpad;
 import com.topwise.cloudpos.data.PinpadConstant;
@@ -36,6 +36,7 @@ public class PosApplication {
 
 //        DBManager.getInstance().init(activity);
         DeviceManager.getInstance();
+        DeviceManager.getInstance().bindService();
         mCheckCard = DeviceManager.getInstance().getPbocManager();
         initApp();
     }
@@ -95,7 +96,7 @@ public class PosApplication {
 
     public static void initApp() {
         //downLoadKeys();
-        downLoadParam();
+//        downLoadParam();
     }
 
     /**

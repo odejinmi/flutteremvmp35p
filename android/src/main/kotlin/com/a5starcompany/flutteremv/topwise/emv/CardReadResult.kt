@@ -1,5 +1,4 @@
-package com.a5starcompany.flutteremv.emvreader.emv
-
+package com.a5starcompany.flutteremv.topwise.emv
 
 data class CardReadResult(
     var issuerApplicationData: String = "",

@@ -1,7 +1,5 @@
-package com.a5starcompany.flutteremv.topwise.env;
+package com.a5starcompany.flutteremv.topwise.emv;
 
-import com.a5starcompany.flutteremv.emvreader.emv.CardReadResult;
-import com.a5starcompany.flutteremv.emvreader.emv.CardReadState;
 import com.google.errorprone.annotations.Keep;
 
 import org.jetbrains.annotations.NotNull;
