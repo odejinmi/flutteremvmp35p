@@ -1,6 +1,7 @@
 package com.a5starcompany.flutteremv.topwise
 
 import android.content.Context
+import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
 import com.a5starcompany.flutteremv.topwise.app.PosApplication
@@ -17,12 +18,13 @@ import com.topwise.cloudpos.aidl.emv.AidlPboc
 import com.topwise.cloudpos.aidl.emv.EmvTransData
 import com.topwise.cloudpos.aidl.iccard.AidlICCard
 import com.topwise.cloudpos.aidl.magcard.TrackData
+import com.topwise.cloudpos.aidl.pinpad.AidlPinpad
 import com.topwise.cloudpos.aidl.printer.AidlPrinter
 import com.topwise.cloudpos.aidl.printer.AidlPrinterListener
 import com.topwise.cloudpos.aidl.rfcard.AidlRFCard
 import com.topwise.cloudpos.data.PinpadConstant
 
-class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> Unit) {
+class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> Unit, val pincallback : ( Map<String, String>) -> Unit) {
 
     private val printManager: AidlPrinter? = DeviceManager().getPrintManager()
     val SEARCH_CARD_TIME: Int = 30000
@@ -155,6 +157,13 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
 
     private fun checkCard() {
         aidlPboc = DeviceManager.getInstance().getPbocManager()
+
+        callback.invoke(TransactionMonitor(
+            CardReadState.Loading,
+            "card time out",
+            true,
+            null as CardReadResult?
+        ))
         try {
             DeviceManager.getInstance().getRFCard().close()
             DeviceManager.getInstance().getICCardMoniter().close()
@@ -189,16 +198,8 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
                             0x01.toByte(), true, false, false,
                             0x01.toByte(), 0x00.toByte(), byteArrayOf(0x00, 0x00, 0x00)
                         )
-
-                        callback.invoke(TransactionMonitor(
-                            CardReadState.Loading,
-                            "card time out",
-                            true,
-                            null as CardReadResult?
-                        ))
                         aidlPboc!!.processPBOC(transData, EmvListener(
-                            aidlPboc = aidlPboc!!,
-                            mWorkKeyIndex = mWorkKeyIndex
+                            aidlPboc = aidlPboc!!
                         ){
                             callback.invoke(it)
                         })
@@ -218,8 +219,7 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
                             null as CardReadResult?
                         ))
                         aidlPboc!!.processPBOC(transData, EmvListener(
-                            aidlPboc = aidlPboc!!,
-                            mWorkKeyIndex = mWorkKeyIndex
+                            aidlPboc = aidlPboc!!
                         ){
                             callback.invoke(it)
                         })
@@ -319,4 +319,43 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
         }
     }
 
+    fun mygetpin(){
+
+        val pinType: Byte
+        /*******online pin  */
+//        if (type == 0x03) {
+//            pinType = 0x00
+//        } else {
+            pinType = 0x01
+//        }
+        val bundle: Bundle = getPinParam(pinType)
+        var aidlPin : AidlPinpad = DeviceManager.getInstance().getPinpadManager()
+        aidlPin.getPin(bundle, MyGetPinListener(aidlPboc!!){
+                pincallback.invoke(it)
+        })
+    }
+
+    /********
+     * wkeyid :pin key index;
+     * keytype: pin type 0x01== offline pin ;0x00 = online pin
+     * input_pin_mode :pin  mode   0,4,5,6  mean the  pin len will be 0,4,5,6
+     * if you want to disable bypass ,0 should not  in the  string
+     * pan :card no
+     * the more param pls see document  p28
+     */
+    fun getPinParam(pinType: Byte): Bundle {
+        val bundle = Bundle()
+        bundle.putInt("wkeyid", mWorkKeyIndex)
+        bundle.putInt("keytype", pinType.toInt())
+        bundle.putInt("inputtimes", 1)
+        bundle.putInt("minlength", 4)
+        bundle.putInt("maxlength", 12)
+        bundle.putString("pan", "0000000000000000")
+        bundle.putString("tips", "RMB:2000.00")
+        /*** pin  mode   0,4,5,6  mean the  pin len will be 0,4,5,6
+         * if you want to disable bypass ,0 should not  in the  string
+         */
+        bundle.putString("input_pin_mode", "0,4,5,6")
+        return bundle
+    }
 }

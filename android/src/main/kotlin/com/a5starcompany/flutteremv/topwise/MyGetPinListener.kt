@@ -1,12 +1,7 @@
 package com.a5starcompany.flutteremv.topwise
 
 import android.os.RemoteException
-import android.util.Log
-import com.a5starcompany.flutteremv.topwise.emv.CardReadResult
-import com.a5starcompany.flutteremv.topwise.emv.CardReadState
-import com.a5starcompany.flutteremv.topwise.emv.TransactionMonitor
 import com.a5starcompany.flutteremv.topwise.util.BCDASCII
-import com.a5starcompany.flutteremv.topwise.util.HexUtil
 import com.topwise.cloudpos.aidl.emv.AidlPboc
 import com.topwise.cloudpos.aidl.pinpad.GetPinListener
 import com.topwise.cloudpos.data.LedCode
@@ -20,7 +15,7 @@ class MyGetPinListener(val aidlPboc : AidlPboc, val callback : ( Map<String, Str
                     "state" to "stop",
                     "message" to "onStopGetPin"
                 )
-                )
+        )
         aidlPboc.endPBOC()
         aidlPboc.cancelCheckCard()
         closeLed()

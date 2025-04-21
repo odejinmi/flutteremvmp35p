@@ -24,7 +24,9 @@ class MethodCallHandlerImpl(
     private var channel: MethodChannel? = null
     private var result: MethodChannel.Result? = null
     private var eventchannel : EventChannel? = null
+    private var pineventchannel : EventChannel? = null
     private var eventSink: EventChannel.EventSink? = null
+    private var pineventSink: EventChannel.EventSink? = null
 
 
     init {
@@ -35,15 +37,20 @@ class MethodCallHandlerImpl(
         eventchannel = EventChannel(messenger, "flutteremvevent")
         eventchannel?.setStreamHandler(this)
 
+        pineventchannel = EventChannel(messenger, "flutteremvpinevent")
+        pineventchannel?.setStreamHandler(this)
+
         binding.addActivityResultListener(this)
     }
 
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         eventSink = events
+        pineventSink = events
     }
 
     override fun onCancel(arguments: Any?) {
         eventSink = null
+        pineventSink = null
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -94,6 +101,11 @@ class MethodCallHandlerImpl(
                 print.startCustomPrint(call)
             }
 
+            "getpin" -> {
+                topWiseDevice.mygetpin()
+
+            }
+
 
 
             else -> {
@@ -108,74 +120,86 @@ class MethodCallHandlerImpl(
 
 
     val topWiseDevice by lazy {
-        TopWiseDevice(binding.activity) {
-            var map1: MutableMap<String, Any> = mutableMapOf()
-            if (it.transactionData != null) {
-                val transactionData = it.transactionData!!
+        TopWiseDevice(
+            binding.activity,
+            callback = {
+                var map1: MutableMap<String, Any> = mutableMapOf()
+                if (it.transactionData != null) {
+                    val transactionData = it.transactionData!!
 
 //                val maskedPan = transactionData.applicationPrimaryAccountNumber.let { pan ->
 //                    val stars = "*".repeat(pan.length - 9)
 //                    pan.take(5) + stars + pan.takeLast(4)
 //                }
 
-                map1 = mutableMapOf(
-                    "amount" to transactionData.amount,
-                    "amountAuthorized" to transactionData.amountAuthorized,
-                    "applicationDiscretionaryData" to transactionData.applicationDiscretionaryData,
-                    "applicationInterchangeProfile" to transactionData.applicationInterchangeProfile,
-                    "applicationIssuerData" to transactionData.applicationIssuerData,
-                    "applicationPANSequenceNumber" to transactionData.applicationPANSequenceNumber,
-                    "applicationPrimaryAccountNumber" to transactionData.applicationPrimaryAccountNumber,
-                    "applicationTransactionCounter" to transactionData.applicationTransactionCounter,
-                    "applicationVersionNumber" to transactionData.applicationVersionNumber,
-                    "authorizationResponseCode" to transactionData.authorizationResponseCode,
-                    "cardHolderName" to transactionData.cardHolderName,
-                    "cardScheme" to transactionData.cardScheme,
-                    "cardSeqenceNumber" to transactionData.cardSeqenceNumber,
-                    "cardholderVerificationMethod" to transactionData.cardholderVerificationMethod,
-                    "cashBackAmount" to transactionData.cashBackAmount,
-                    "cryptogram" to transactionData.cryptogram,
-                    "cryptogramInformationData" to transactionData.cryptogramInformationData,
-                    "dedicatedFileName" to transactionData.dedicatedFileName,
-                    "deviceSerialNumber" to transactionData.deviceSerialNumber,
-                    "dencryptedPinBlock" to transactionData.encryptedPinBlock,
-                    "expirationDate" to transactionData.expirationDate,
-                    "iccDataString" to transactionData.iccDataString,
-                    "interfaceDeviceSerialNumber" to transactionData.interfaceDeviceSerialNumber,
-                    "issuerApplicationData" to transactionData.issuerApplicationData,
-                    "nibssIccSubset" to transactionData.nibssIccSubset,
-                    "originalDeviceSerial" to transactionData.originalDeviceSerial,
-                    "originalPan" to transactionData.originalPan,
-                    "pinBlock" to transactionData.pinBlock,
-                    "pinBlockDUKPT" to transactionData.pinBlockDUKPT,
-                    "pinBlockTrippleDES" to transactionData.pinBlockDUKPT,
-                    "plainPinKey" to transactionData.plainPinKey,
-                    "terminalCapabilities" to transactionData.terminalCapabilities,
-                    "terminalCountryCode" to transactionData.terminalCountryCode,
-                    "terminalType" to transactionData.terminalType,
-                    "terminalVerificationResults" to transactionData.terminalVerificationResults,
-                    "track2Data" to transactionData.track2Data,
-                    "transactionCurrencyCode" to transactionData.transactionCurrencyCode,
-                    "transactionDate" to transactionData.transactionDate,
-                    "transactionSequenceCounter" to transactionData.transactionSequenceCounter,
-                    "transactionSequenceNumber" to transactionData.transactionSequenceNumber,
-                    "transactionType" to transactionData.transactionType,
-                    "unifiedPaymentIccData" to transactionData.unifiedPaymentIccData,
-                    "unpredictableNumber" to transactionData.unpredictableNumber
+                    map1 = mutableMapOf(
+                        "amount" to transactionData.amount,
+                        "amountAuthorized" to transactionData.amountAuthorized,
+                        "applicationDiscretionaryData" to transactionData.applicationDiscretionaryData,
+                        "applicationInterchangeProfile" to transactionData.applicationInterchangeProfile,
+                        "applicationIssuerData" to transactionData.applicationIssuerData,
+                        "applicationPANSequenceNumber" to transactionData.applicationPANSequenceNumber,
+                        "applicationPrimaryAccountNumber" to transactionData.applicationPrimaryAccountNumber,
+                        "applicationTransactionCounter" to transactionData.applicationTransactionCounter,
+                        "applicationVersionNumber" to transactionData.applicationVersionNumber,
+                        "authorizationResponseCode" to transactionData.authorizationResponseCode,
+                        "cardHolderName" to transactionData.cardHolderName,
+                        "cardScheme" to transactionData.cardScheme,
+                        "cardSeqenceNumber" to transactionData.cardSeqenceNumber,
+                        "cardholderVerificationMethod" to transactionData.cardholderVerificationMethod,
+                        "cashBackAmount" to transactionData.cashBackAmount,
+                        "cryptogram" to transactionData.cryptogram,
+                        "cryptogramInformationData" to transactionData.cryptogramInformationData,
+                        "dedicatedFileName" to transactionData.dedicatedFileName,
+                        "deviceSerialNumber" to transactionData.deviceSerialNumber,
+                        "dencryptedPinBlock" to transactionData.encryptedPinBlock,
+                        "expirationDate" to transactionData.expirationDate,
+                        "iccDataString" to transactionData.iccDataString,
+                        "interfaceDeviceSerialNumber" to transactionData.interfaceDeviceSerialNumber,
+                        "issuerApplicationData" to transactionData.issuerApplicationData,
+                        "nibssIccSubset" to transactionData.nibssIccSubset,
+                        "originalDeviceSerial" to transactionData.originalDeviceSerial,
+                        "originalPan" to transactionData.originalPan,
+                        "pinBlock" to transactionData.pinBlock,
+                        "pinBlockDUKPT" to transactionData.pinBlockDUKPT,
+                        "pinBlockTrippleDES" to transactionData.pinBlockDUKPT,
+                        "plainPinKey" to transactionData.plainPinKey,
+                        "terminalCapabilities" to transactionData.terminalCapabilities,
+                        "terminalCountryCode" to transactionData.terminalCountryCode,
+                        "terminalType" to transactionData.terminalType,
+                        "terminalVerificationResults" to transactionData.terminalVerificationResults,
+                        "track2Data" to transactionData.track2Data,
+                        "transactionCurrencyCode" to transactionData.transactionCurrencyCode,
+                        "transactionDate" to transactionData.transactionDate,
+                        "transactionSequenceCounter" to transactionData.transactionSequenceCounter,
+                        "transactionSequenceNumber" to transactionData.transactionSequenceNumber,
+                        "transactionType" to transactionData.transactionType,
+                        "unifiedPaymentIccData" to transactionData.unifiedPaymentIccData,
+                        "unpredictableNumber" to transactionData.unpredictableNumber
+                    )
+
+                }
+
+                val map: MutableMap<String, Any> = mutableMapOf(
+                    "state" to it.state.toString(),
+                    "message" to it.message,
+                    "status" to it.status,
+                    "transactionData" to map1
                 )
-
+                binding.activity.runOnUiThread {
+                    eventSink?.success(map)
+                }
+            },
+            pincallback = {
+                val map: MutableMap<String, String?> = mutableMapOf(
+                    "message" to it["message"],
+                    "state" to it["state"],
+                )
+                binding.activity.runOnUiThread {
+                    eventSink?.success(map)
+                }
             }
-
-            val map: MutableMap<String, Any> = mutableMapOf(
-                "state" to it.state.toString(),
-                "message" to it.message,
-                "status" to it.status,
-                "transactionData" to map1
-            )
-            binding.activity.runOnUiThread {
-                eventSink?.success(map)
-            }
-        }
+        )
     }
 
     /**

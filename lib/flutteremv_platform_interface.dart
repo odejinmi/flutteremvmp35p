@@ -58,6 +58,14 @@ abstract class FlutteremvPlatform extends PlatformInterface {
     throw UnimplementedError('startkeyboard() has not been implemented.');
   }
 
+  void startpinpad({
+    ValueChanged<String>? onchange,
+    Function? proceed,
+    Function? cancel,
+  }) {
+    throw UnimplementedError('startpinpad() has not been implemented.');
+  }
+
   void stopkeyboard() {
     throw UnimplementedError('stopkeyboard() has not been implemented.');
   }

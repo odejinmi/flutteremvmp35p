@@ -45,6 +45,18 @@ class Flutteremv {
     );
   }
 
+  void startpinpad({
+    ValueChanged<String>? onchange,
+    Function? proceed,
+    Function? cancel,
+  }) async {
+    return FlutteremvPlatform.instance.startpinpad(
+      onchange: onchange,
+      proceed: proceed,
+      cancel: cancel,
+    );
+  }
+
   void stopkeyboard() async {
     return FlutteremvPlatform.instance.stopkeyboard();
   }

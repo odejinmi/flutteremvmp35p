@@ -1,6 +1,5 @@
 package com.a5starcompany.flutteremv.topwise
 
-import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
 import com.a5starcompany.flutteremv.topwise.app.PosApplication
@@ -22,7 +21,7 @@ import com.topwise.cloudpos.data.LedCode
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class EmvListener(val aidlPboc:AidlPboc, val mWorkKeyIndex: Int, val callback: (TransactionMonitor) -> Unit) : AidlPbocStartListener.Stub() {
+class EmvListener(val aidlPboc:AidlPboc, val callback: (TransactionMonitor) -> Unit) : AidlPbocStartListener.Stub() {
 
     private var processor: Processor? = null
     /*******
@@ -34,7 +33,7 @@ class EmvListener(val aidlPboc:AidlPboc, val mWorkKeyIndex: Int, val callback: (
     override fun requestImportAmount(arg0: Int) {
         /*****notice importAmount should transfer
          * correct amount to the emv kernel */
-        aidlPboc.importAmount(PosApplication.getApp().mConsumeData.amount)
+        aidlPboc.importAmount("${PosApplication.getApp().mConsumeData.amount}.00")
     }
 
     /*******
@@ -255,54 +254,11 @@ class EmvListener(val aidlPboc:AidlPboc, val mWorkKeyIndex: Int, val callback: (
 //        PosApplication.getApp().mConsumeData.setCardReadResult(cardReadResult)
 //        CardManager.Companion.getInstance().setCardReadResult(cardReadResult)
 
-        val shola =  CardReadResult(
-            issuerApplicationData = cardReadResult.issuerApplicationData,
-            applicationVersionNumber = cardReadResult.applicationVersionNumber,
-            transactionType = cardReadResult.transactionType,
-            amount = cardReadResult.amount,
-            amountAuthorized = cardReadResult.amountAuthorized,
-            cardSeqenceNumber = cardReadResult.cardSeqenceNumber,
-            unifiedPaymentIccData = cardReadResult.unifiedPaymentIccData,
-            deviceSerialNumber = cardReadResult.deviceSerialNumber,
-            iccDataString = cardReadResult.iccDataString,
-            authorizationResponseCode = cardReadResult.authorizationResponseCode,
-            nibssIccSubset = cardReadResult.nibssIccSubset,
-            applicationTransactionCounter = cardReadResult.applicationTransactionCounter,
-            terminalVerificationResults = cardReadResult.terminalVerificationResults,
-            expirationDate = cardReadResult.expirationDate,
-            applicationPrimaryAccountNumber = cardReadResult.applicationPrimaryAccountNumber,
-            applicationPANSequenceNumber = cardReadResult.applicationPANSequenceNumber,
-            transactionDate = cardReadResult.transactionDate,
-            cryptogramInformationData = cardReadResult.cryptogramInformationData,
-            dedicatedFileName = cardReadResult.dedicatedFileName,
-            transactionSequenceNumber = cardReadResult.transactionSequenceNumber,
-            transactionSequenceCounter = cardReadResult.transactionSequenceCounter,
-            cryptogram = cardReadResult.cryptogram,
-            track2Data = cardReadResult.track2Data,
-            cardholderVerificationMethod = cardReadResult.cardholderVerificationMethod,
-            applicationInterchangeProfile = cardReadResult.applicationInterchangeProfile,
-            pinBlockDUKPT = cardReadResult.pinBlockDUKPT,
-            pinBlockTrippleDES = cardReadResult.pinBlockTrippleDES,
-            cardScheme = cardReadResult.cardScheme,
-            applicationDiscretionaryData = cardReadResult.applicationDiscretionaryData,
-            unpredictableNumber = cardReadResult.unpredictableNumber,
-            interfaceDeviceSerialNumber = cardReadResult.interfaceDeviceSerialNumber,
-            encryptedPinBlock = cardReadResult.encryptedPinBlock,
-            terminalType = cardReadResult.terminalType,
-            cardHolderName = cardReadResult.cardHolderName,
-            originalDeviceSerial = cardReadResult.originalDeviceSerial,
-            transactionCurrencyCode = cardReadResult.transactionCurrencyCode,
-            terminalCountryCode = cardReadResult.terminalCountryCode,
-            cashBackAmount = cardReadResult.cashBackAmount,
-            terminalCapabilities = cardReadResult.terminalCapabilities,
-            plainPinKey = cardReadResult.plainPinKey,
-            originalPan = cardReadResult.originalPan,
-        )
         callback.invoke(TransactionMonitor(
             CardReadState.CardData,
             "card time out",
             true,
-            shola
+            cardReadResult
         ))
     }
 
@@ -508,31 +464,6 @@ class EmvListener(val aidlPboc:AidlPboc, val mWorkKeyIndex: Int, val callback: (
         } catch (e: RemoteException) {
             e.printStackTrace()
         }
-    }
-
-
-    /********
-     * wkeyid :pin key index;
-     * keytype: pin type 0x01== offline pin ;0x00 = online pin
-     * input_pin_mode :pin  mode   0,4,5,6  mean the  pin len will be 0,4,5,6
-     * if you want to disable bypass ,0 should not  in the  string
-     * pan :card no
-     * the more param pls see document  p28
-     */
-    private fun getPinParam(pinType: Byte): Bundle {
-        val bundle = Bundle()
-        bundle.putInt("wkeyid", mWorkKeyIndex)
-        bundle.putInt("keytype", pinType.toInt())
-        bundle.putInt("inputtimes", 1)
-        bundle.putInt("minlength", 4)
-        bundle.putInt("maxlength", 12)
-        bundle.putString("pan", "0000000000000000")
-        bundle.putString("tips", "RMB:2000.00")
-        /*** pin  mode   0,4,5,6  mean the  pin len will be 0,4,5,6
-         * if you want to disable bypass ,0 should not  in the  string
-         */
-        bundle.putString("input_pin_mode", "0,4,5,6")
-        return bundle
     }
 
     private fun setExpired() :String{

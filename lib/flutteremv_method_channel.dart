@@ -18,6 +18,7 @@ class MethodChannelFlutteremv extends FlutteremvPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('flutteremv');
   final eventChannel = const EventChannel('flutteremvevent');
+  final pineventChannel = const EventChannel('flutteremvpinevent');
 
   // @override
   Stream<dynamic> get stateStream {
@@ -97,6 +98,24 @@ class MethodChannelFlutteremv extends FlutteremvPlatform {
   @override
   void stopkeyboard() async {
     hardwareKeyboard.removeHandler(keyEventHandler.handleKeyEvent);
+  }
+
+  @override
+  void startpinpad({
+    ValueChanged<String>? onchange,
+    Function? proceed,
+    Function? cancel,
+  }) async {
+    // Initialize the keyEventHandler once and use it everywhere
+    keyEventHandler = Keyevent(
+      onchange: onchange,
+      proceed: proceed,
+      cancel: cancel,
+    );
+
+    methodChannel.invokeMethod('getpin');
+    keyEventHandler.handleKeyEventstream(eventChannel.receiveBroadcastStream());
+    // hardwareKeyboard.addHandler(keyEventHandler.handleKeyEvent);
   }
 
   @override
