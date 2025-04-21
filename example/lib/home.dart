@@ -23,6 +23,8 @@ class _HomeState extends State<Home> {
 
   var eventresult = {};
 
+  String amount = "500";
+
   @override
   void initState() {
     super.initState();
@@ -49,9 +51,10 @@ class _HomeState extends State<Home> {
         case "CallBackTransResult":
           return;
         case "CardDetected":
+          Navigator.pop(context);
           var result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Carpin(amount: "200")),
+            MaterialPageRoute(builder: (context) => Carpin(amount: amount)),
           );
           if (result != null) {
             _topwisemp35pPlugin.enterpin(result);
@@ -103,7 +106,7 @@ class _HomeState extends State<Home> {
             Center(child: Text('Running on: $_platformVersion\n')),
             ElevatedButton(
               onPressed: () async {
-                _topwisemp35pPlugin.debitcard("200");
+                _topwisemp35pPlugin.debitcard(amount);
               },
               child: const Text("start transaction"),
             ),

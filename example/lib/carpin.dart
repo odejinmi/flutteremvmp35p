@@ -201,6 +201,7 @@ class _CarpinState extends State<Carpin> {
         amountController = '';
       }
     }
+    setState(() {});
   }
 
   @override

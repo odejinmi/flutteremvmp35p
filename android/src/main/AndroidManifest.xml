@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.a5starcompany.flutteremv">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 1、设置打印机权限 -->
     <uses-permission android:name="android.permission.CLOUDPOS_PRINTER" /> <!-- 2、访问密码键盘权限 -->
@@ -28,11 +29,12 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 往SDCard写入数据权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
     <application
-        android:name="com.a5starcompany.flutteremv.topwise.TopApp">
-        <service
-            android:name="com.a5starcompany.flutteremv.topwise.card.CardMoniterService"
-            android:enabled="true" />
+        android:name=".topwise.TopApp">
+<!--        <service-->
+<!--            android:name=".topwise.card.CardMoniterService"-->
+<!--            android:enabled="true" />-->
 
     </application>
 </manifest>
