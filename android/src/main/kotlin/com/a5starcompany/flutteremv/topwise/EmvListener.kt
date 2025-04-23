@@ -10,8 +10,6 @@ import com.a5starcompany.flutteremv.topwise.emv.TransactionMonitor
 import com.a5starcompany.flutteremv.topwise.util.BCDASCII
 import com.a5starcompany.flutteremv.topwise.util.DukptHelper
 import com.a5starcompany.flutteremv.topwise.util.Format
-import com.a5starcompany.flutteremv.topwise.util.IPEK_LIVE
-import com.a5starcompany.flutteremv.topwise.util.KSN_LIVE
 import com.topwise.cloudpos.aidl.emv.AidlPboc
 import com.topwise.cloudpos.aidl.emv.AidlPbocStartListener
 import com.topwise.cloudpos.aidl.emv.CardInfo
@@ -237,7 +235,7 @@ class EmvListener(val aidlPboc:AidlPboc, val callback: (TransactionMonitor) -> U
         cardReadResult.unifiedPaymentIccData = BCDASCII.bytesToHexString(getUnifiedPaymentConsume55())
         cardReadResult.pinBlockDUKPT =
             DukptHelper.DesEncryptDukpt(
-                DukptHelper.getSessionKey(IPEK_LIVE, KSN_LIVE),
+                DukptHelper.getSessionKey(PosApplication.getApp().mConsumeData.ipeklive, PosApplication.getApp().mConsumeData.ksnlive),
                 PosApplication.getApp().mConsumeData.getCardno(),
                 BCDASCII.bytesToHexString(PosApplication.getApp().mConsumeData.pin)
             )

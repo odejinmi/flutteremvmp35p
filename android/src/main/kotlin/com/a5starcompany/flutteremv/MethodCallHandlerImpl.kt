@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.util.Log
 import com.a5starcompany.flutteremv.topwise.TopWiseDevice
+import com.a5starcompany.flutteremv.topwise.app.PosApplication
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
@@ -61,6 +62,21 @@ class MethodCallHandlerImpl(
         when (call.method) {
 
             "initialize" -> {
+
+                if (!(call.arguments is Map<*,*>)) {
+                    result.error(ERROR_CODE_PAYMENT_INITIALIZATION, "Invalid input(s)", null)
+                    return
+                }
+// Convert the string to a ByteArray
+                val ipeklive: String = call.argument<String>("ipeklive")!!
+                val ksnlive: String = call.argument<String>("ksnlive")!!
+                PosApplication.getApp().mConsumeData.ipeklive = ipeklive;
+                PosApplication.getApp().mConsumeData.ksnlive = ksnlive;
+                val map: MutableMap<String, Any> = mutableMapOf()
+                map["state"] = "1"
+                map["message"] = "Sdk initialise"
+                map["status"] = map
+                result.success(serialnumber)
                 Log.d("TAG", "onMethodCall: card listening started")
             }
 

@@ -8,6 +8,26 @@ import com.a5starcompany.flutteremv.topwise.emv.CardReadResult;
 public class ConsumeData {
     private static final String TAG = ConsumeData.class.getSimpleName();
 
+    public String  IPEK_LIVE = "3F2216D8297BCE9C";
+    public String KSN_LIVE = "0000000002DDDDE00001";
+    public String IPEK_TEST = "9F8011E7E71E483B";
+    public String KSN_TEST = "0000000006DDDDE01500";
+
+    public void setIpeklive(String amount) {
+        IPEK_LIVE = amount;
+    }
+
+    public String getIpeklive() {
+        return IPEK_LIVE;
+    }
+
+    public void setKsnlive(String amount) {
+        KSN_LIVE = amount;
+    }
+
+    public String getKsnlive() {
+        return KSN_LIVE;
+    }
     public static final int CONSUME_TYPE_CARD = 1;
     public static final int CONSUME_TYPE_SCAN = 2;
     public static final int CONSUME_TYPE_CASHBACK = 3;

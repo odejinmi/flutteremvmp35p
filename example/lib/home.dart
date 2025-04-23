@@ -79,6 +79,11 @@ class _HomeState extends State<Home> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
+      var result = await _topwisemp35pPlugin.initialize(
+        "3F2216D8297BCE9C",
+        "0000000002DDDDE00001",
+      );
+      print(result);
       platformVersion =
           await _topwisemp35pPlugin.deviceserialnumber() ??
           'Unknown platform version';
