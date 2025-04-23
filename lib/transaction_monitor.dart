@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-TransactionMonitor transactionMonitorFromJson(String str) => TransactionMonitor.fromJson(json.decode(str));
+TransactionMonitor transactionMonitorFromJson(String str) =>
+    TransactionMonitor.fromJson(json.decode(str));
 
-String transactionMonitorToJson(TransactionMonitor data) => json.encode(data.toJson());
+String transactionMonitorToJson(TransactionMonitor data) =>
+    json.encode(data.toJson());
 
 class TransactionMonitor {
   String state;
@@ -21,12 +23,17 @@ class TransactionMonitor {
     this.transactionData,
   });
 
-  factory TransactionMonitor.fromJson(Map<String, dynamic> json) => TransactionMonitor(
-    state: json["state"],
-    message: json["message"],
-    status: json["status"],
-    transactionData: json["transactionData"].isNotEmpty?TransactionData.fromJson(json["transactionData"]):null,
-  );
+  factory TransactionMonitor.fromJson(Map<String, dynamic> json) =>
+      TransactionMonitor(
+        state: json["state"],
+        message: json["message"],
+        status: json["status"],
+        transactionData:
+            json["transactionData"] != null &&
+                    json["transactionData"].isNotEmpty
+                ? TransactionData.fromJson(json["transactionData"])
+                : null,
+      );
 
   Map<String, dynamic> toJson() => {
     "state": state,
@@ -36,7 +43,8 @@ class TransactionMonitor {
   };
 
   @override
-  String toString()=> '"state": $state, "message": $message, "status": $status, "transactionData": ${transactionData?.toString()}';
+  String toString() =>
+      '"state": $state, "message": $message, "status": $status, "transactionData": ${transactionData?.toString()}';
 }
 
 class TransactionData {
@@ -128,50 +136,52 @@ class TransactionData {
     required this.unpredictableNumber,
   });
 
-  factory TransactionData.fromJson(Map<String, dynamic> json) => TransactionData(
-    amountAuthorized: json["amountAuthorized"],
-    applicationDiscretionaryData: json["applicationDiscretionaryData"],
-    applicationInterchangeProfile: json["applicationInterchangeProfile"],
-    applicationIssuerData: json["applicationIssuerData"],
-    applicationPanSequenceNumber: json["applicationPANSequenceNumber"],
-    applicationPrimaryAccountNumber: json["applicationPrimaryAccountNumber"],
-    applicationTransactionCounter: json["applicationTransactionCounter"],
-    applicationVersionNumber: json["applicationVersionNumber"],
-    authorizationResponseCode: json["authorizationResponseCode"],
-    cardHolderName: json["cardHolderName"],
-    cardScheme: json["cardScheme"],
-    cardSeqenceNumber: json["cardSeqenceNumber"],
-    cardholderVerificationMethod: json["cardholderVerificationMethod"],
-    cashBackAmount: json["cashBackAmount"],
-    cryptogram: json["cryptogram"],
-    cryptogramInformationData: json["cryptogramInformationData"],
-    dedicatedFileName: json["dedicatedFileName"],
-    deviceSerialNumber: json["deviceSerialNumber"],
-    dencryptedPinBlock: json["dencryptedPinBlock"],
-    expirationDate: json["expirationDate"],
-    iccDataString: json["iccDataString"],
-    interfaceDeviceSerialNumber: json["interfaceDeviceSerialNumber"],
-    issuerApplicationData: json["issuerApplicationData"],
-    nibssIccSubset: json["nibssIccSubset"],
-    originalDeviceSerial: json["originalDeviceSerial"],
-    originalPan: json["originalPan"],
-    pinBlock: json["pinBlock"],
-    pinBlockDukpt: json["pinBlockDUKPT"],
-    pinBlockTrippleDes: json["pinBlockTrippleDES"],
-    plainPinKey: json["plainPinKey"],
-    terminalCapabilities: json["terminalCapabilities"],
-    terminalCountryCode: json["terminalCountryCode"],
-    terminalType: json["terminalType"],
-    terminalVerificationResults: json["terminalVerificationResults"],
-    track2Data: json["track2Data"],
-    transactionCurrencyCode: json["transactionCurrencyCode"],
-    transactionDate: json["transactionDate"],
-    transactionSequenceCounter: json["transactionSequenceCounter"],
-    transactionSequenceNumber: json["transactionSequenceNumber"],
-    transactionType: json["transactionType"],
-    unifiedPaymentIccData: json["unifiedPaymentIccData"],
-    unpredictableNumber: json["unpredictableNumber"],
-  );
+  factory TransactionData.fromJson(Map<String, dynamic> json) =>
+      TransactionData(
+        amountAuthorized: json["amountAuthorized"],
+        applicationDiscretionaryData: json["applicationDiscretionaryData"],
+        applicationInterchangeProfile: json["applicationInterchangeProfile"],
+        applicationIssuerData: json["applicationIssuerData"],
+        applicationPanSequenceNumber: json["applicationPANSequenceNumber"],
+        applicationPrimaryAccountNumber:
+            json["applicationPrimaryAccountNumber"],
+        applicationTransactionCounter: json["applicationTransactionCounter"],
+        applicationVersionNumber: json["applicationVersionNumber"],
+        authorizationResponseCode: json["authorizationResponseCode"],
+        cardHolderName: json["cardHolderName"],
+        cardScheme: json["cardScheme"],
+        cardSeqenceNumber: json["cardSeqenceNumber"],
+        cardholderVerificationMethod: json["cardholderVerificationMethod"],
+        cashBackAmount: json["cashBackAmount"],
+        cryptogram: json["cryptogram"],
+        cryptogramInformationData: json["cryptogramInformationData"],
+        dedicatedFileName: json["dedicatedFileName"],
+        deviceSerialNumber: json["deviceSerialNumber"],
+        dencryptedPinBlock: json["dencryptedPinBlock"],
+        expirationDate: json["expirationDate"],
+        iccDataString: json["iccDataString"],
+        interfaceDeviceSerialNumber: json["interfaceDeviceSerialNumber"],
+        issuerApplicationData: json["issuerApplicationData"],
+        nibssIccSubset: json["nibssIccSubset"],
+        originalDeviceSerial: json["originalDeviceSerial"],
+        originalPan: json["originalPan"],
+        pinBlock: json["pinBlock"],
+        pinBlockDukpt: json["pinBlockDUKPT"],
+        pinBlockTrippleDes: json["pinBlockTrippleDES"],
+        plainPinKey: json["plainPinKey"],
+        terminalCapabilities: json["terminalCapabilities"],
+        terminalCountryCode: json["terminalCountryCode"],
+        terminalType: json["terminalType"],
+        terminalVerificationResults: json["terminalVerificationResults"],
+        track2Data: json["track2Data"],
+        transactionCurrencyCode: json["transactionCurrencyCode"],
+        transactionDate: json["transactionDate"],
+        transactionSequenceCounter: json["transactionSequenceCounter"],
+        transactionSequenceNumber: json["transactionSequenceNumber"],
+        transactionType: json["transactionType"],
+        unifiedPaymentIccData: json["unifiedPaymentIccData"],
+        unpredictableNumber: json["unpredictableNumber"],
+      );
 
   Map<String, dynamic> toJson() => {
     "amountAuthorized": amountAuthorized,
@@ -218,7 +228,9 @@ class TransactionData {
     "unpredictableNumber": unpredictableNumber,
   };
 
-  @override String toString ()=> '"amountAuthorized": $amountAuthorized, "applicationDiscretionaryData": $applicationDiscretionaryData, "applicationInterchangeProfile": $applicationInterchangeProfile, '
+  @override
+  String toString() =>
+      '"amountAuthorized": $amountAuthorized, "applicationDiscretionaryData": $applicationDiscretionaryData, "applicationInterchangeProfile": $applicationInterchangeProfile, '
       '"applicationIssuerData": $applicationIssuerData, "applicationPANSequenceNumber": $applicationPanSequenceNumber, "applicationPrimaryAccountNumber": $applicationPrimaryAccountNumber, '
       '"applicationTransactionCounter": $applicationTransactionCounter, "applicationVersionNumber": $applicationVersionNumber, "authorizationResponseCode": $authorizationResponseCode, '
       '"cardHolderName": $cardHolderName, "cardScheme": $cardScheme, "cardSeqenceNumber": $cardSeqenceNumber, "cardholderVerificationMethod": $cardholderVerificationMethod, "cashBackAmount": $cashBackAmount, '
