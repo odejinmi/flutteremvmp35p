@@ -75,8 +75,8 @@ class MethodCallHandlerImpl(
                 val map: MutableMap<String, Any> = mutableMapOf()
                 map["state"] = "1"
                 map["message"] = "Sdk initialise"
-                map["status"] = map
-                result.success(serialnumber)
+                map["status"] = true
+                result.success(map)
                 Log.d("TAG", "onMethodCall: card listening started")
             }
 

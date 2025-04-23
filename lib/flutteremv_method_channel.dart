@@ -64,6 +64,7 @@ class MethodChannelFlutteremv extends FlutteremvPlatform {
     Map<String, String> args = {"ipeklive": ipeklive, "ksnlive": ksnlive};
     var result = await methodChannel.invokeMethod("initialize", args);
     print("plugin initialize");
+    print(result);
     return transactionMonitorFromJson(jsonEncode(result));
   }
 
