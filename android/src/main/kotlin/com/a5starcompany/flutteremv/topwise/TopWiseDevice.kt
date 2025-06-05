@@ -72,13 +72,13 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
 //            finalPan = mCardNo.take(5) + stars + mCardNo!!.takeLast(4)
 //        }
         PosApplication.getApp().mConsumeData?.pin = pin
-//        PosApplication.getApp().mConsumeData?.pinBlock = BCDASCII.bytesToHexString(
-//            Format.pinblock(
-//                mCardNo,
-//                directpin
-//            )
-//        )
-    PosApplication.getApp().mConsumeData?.pinBlock = Encrypt().encrypt(directpin)
+        PosApplication.getApp().mConsumeData?.pinBlock = BCDASCII.bytesToHexString(
+            Format.pinblock(
+                mCardNo,
+                directpin
+            )
+        )
+//    PosApplication.getApp().mConsumeData?.pinBlock = Encrypt().encrypt(directpin)
 
 //            if (isOnline) {
 //                //socket通信
@@ -323,18 +323,18 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
 
     fun mygetpin(){
 
-        val pinType: Byte
-        /*******online pin  */
-//        if (type == 0x03) {
-//            pinType = 0x00
-//        } else {
-            pinType = 0x01
-//        }
-        val bundle: Bundle = getPinParam(pinType)
-        var aidlPin : AidlPinpad = DeviceManager.getInstance().getPinpadManager()
-        aidlPin.getPin(bundle, MyGetPinListener(aidlPboc!!){
-                pincallback.invoke(it)
-        })
+//        val pinType: Byte
+//        /*******online pin  */
+////        if (type == 0x03) {
+////            pinType = 0x00
+////        } else {
+//            pinType = 0x01
+////        }
+//        val bundle: Bundle = getPinParam(pinType)
+//        var aidlPin : AidlPinpad = DeviceManager.getInstance().getPinpadManager()
+//        aidlPin.getPin(bundle, MyGetPinListener(aidlPboc!!){
+//                pincallback.invoke(it)
+//        })
     }
 
     /********

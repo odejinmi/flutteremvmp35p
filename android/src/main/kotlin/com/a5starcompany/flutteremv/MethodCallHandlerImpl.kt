@@ -68,10 +68,10 @@ class MethodCallHandlerImpl(
                     return
                 }
 // Convert the string to a ByteArray
-                val ipeklive: String = call.argument<String>("ipeklive")!!
-                val ksnlive: String = call.argument<String>("ksnlive")!!
-                PosApplication.getApp().mConsumeData.ipeklive = ipeklive;
-                PosApplication.getApp().mConsumeData.ksnlive = ksnlive;
+//                val ipeklive: String = call.argument<String>("ipeklive")!!
+//                val ksnlive: String = call.argument<String>("ksnlive")!!
+                PosApplication.getApp().mConsumeData.ipeklive = "3F2216D8297BCE9C";
+                PosApplication.getApp().mConsumeData.ksnlive = "0000000002DDDDE00001";
                 val map: MutableMap<String, Any> = mutableMapOf()
                 map["state"] = "1"
                 map["message"] = "Sdk initialise"
