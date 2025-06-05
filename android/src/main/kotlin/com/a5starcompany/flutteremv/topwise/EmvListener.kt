@@ -235,7 +235,7 @@ class EmvListener(val aidlPboc:AidlPboc, val callback: (TransactionMonitor) -> U
         cardReadResult.unifiedPaymentIccData = BCDASCII.bytesToHexString(getUnifiedPaymentConsume55())
         cardReadResult.pinBlockDUKPT =
             DukptHelper.DesEncryptDukpt(
-                DukptHelper.getSessionKey(PosApplication.getApp().mConsumeData.ipeklive, PosApplication.getApp().mConsumeData.ksnlive),
+                DukptHelper.getSessionKey(),
                 PosApplication.getApp().mConsumeData.getCardno(),
                 BCDASCII.bytesToHexString(PosApplication.getApp().mConsumeData.pin)
             )

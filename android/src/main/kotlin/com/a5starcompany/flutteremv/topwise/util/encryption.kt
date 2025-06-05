@@ -16,11 +16,15 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.DESKeySpec
 
 
+const val IPEK_LIVE = "3F2216D8297BCE9C"
+const val KSN_LIVE = "0000000002DDDDE00001"
+const val IPEK_TEST = "9F8011E7E71E483B"
+const val KSN_TEST = "0000000006DDDDE01500"
 
 object DukptHelper {
     fun getSessionKey(
-        IPEK: String = PosApplication.getApp().mConsumeData.ipeklive,
-        KSN: String = PosApplication.getApp().mConsumeData.ksnlive
+        IPEK: String = IPEK_LIVE,
+        KSN: String = KSN_LIVE
     ): String {
         var initialIPEK: String = IPEK
         //println("The expected value of the initial IPEK $initialIPEK");
