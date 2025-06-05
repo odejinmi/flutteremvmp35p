@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutteremv/flutteremv.dart';
 import 'package:flutteremv/print.dart';
 import 'package:flutteremv_example/receipt.dart';
+import 'package:pointycastle/api.dart';
+import 'package:pointycastle/digests/sha1.dart';
+import 'package:pointycastle/key_derivators/api.dart';
+import 'package:pointycastle/key_derivators/pbkdf2.dart';
+import 'package:pointycastle/macs/hmac.dart';
 
 import 'carpin.dart';
 import 'eod.dart';
@@ -245,5 +251,138 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+}
+
+class Encrypt {
+  static const int _keySize = 256;
+  static const int _derivationIterations = 1000;
+  static const String _algorithm = "AES";
+  static const int _saltSize = 32; // 256 bits (not 128 as in comment)
+  static const int _ivSize = 32; // 256 bits (not 128 as in comment)
+
+  // You'll need to replace these with your actual values from PosApplication
+  static String get _ipeklive =>
+      "your_password_here"; // Replace with actual password
+  static String get _ksnlive =>
+      "PBKDF2WithHmacSHA1"; // Replace with actual algorithm
+
+  /// Encrypts plaintext using AES encryption with PBKDF2 key derivation
+  /// [plainText] The text to encrypt
+  /// Returns Base64 encoded string containing salt + IV + encrypted data
+  static String encrypt(String plainText) {
+    try {
+      // Generate random salt and IV
+      final salt = _generate256BitsOfRandomEntropy();
+      final iv =
+          _generate256BitsOfRandomEntropy(); // IV should be 128 bits for AES
+
+      // Convert plaintext to bytes
+      final plainTextBytes = utf8.encode(plainText);
+
+      // Derive key from password using PBKDF2
+      final key = _deriveKey(_ipeklive, salt);
+
+      // Initialize cipher for encryption
+      final cipher = PaddedBlockCipher('AES/CBC/PKCS7');
+      final params =
+          PaddedBlockCipherParameters<CipherParameters, CipherParameters>(
+            ParametersWithIV<KeyParameter>(KeyParameter(key), iv),
+            null,
+          );
+
+      cipher.init(true, params); // true for encryption
+
+      // Encrypt the plaintext
+      final encryptedBytes = cipher.process(Uint8List.fromList(plainTextBytes));
+
+      // Concatenate salt + IV + encrypted data
+      final result = Uint8List(salt.length + iv.length + encryptedBytes.length);
+      result.setRange(0, salt.length, salt);
+      result.setRange(salt.length, salt.length + iv.length, iv);
+      result.setRange(salt.length + iv.length, result.length, encryptedBytes);
+
+      // Return Base64 encoded result
+      return base64.encode(result);
+    } catch (e) {
+      throw Exception('Encryption failed: $e');
+    }
+  }
+
+  /// Decrypts ciphertext that was encrypted using the encrypt method
+  /// [cipherText] Base64 encoded string containing salt + IV + encrypted data
+  /// [password] The password used for encryption
+  /// Returns the decrypted plaintext
+  static String decrypt(String cipherText, String password) {
+    try {
+      // Decode Base64 ciphertext
+      final cipherTextBytesWithSaltAndIv = base64.decode(cipherText);
+
+      // Extract salt (first 32 bytes)
+      final salt = Uint8List(_saltSize);
+      salt.setRange(0, _saltSize, cipherTextBytesWithSaltAndIv);
+
+      // Extract IV (next 16 bytes) - IV for AES is always 128 bits
+      final iv = Uint8List(16);
+      iv.setRange(0, 16, cipherTextBytesWithSaltAndIv.skip(_saltSize));
+
+      // Extract encrypted data (remaining bytes)
+      final encryptedBytes = Uint8List(
+        cipherTextBytesWithSaltAndIv.length - _saltSize - 16,
+      );
+      encryptedBytes.setRange(
+        0,
+        encryptedBytes.length,
+        cipherTextBytesWithSaltAndIv.skip(_saltSize + 16),
+      );
+
+      // Derive key from password using same parameters as encryption
+      final key = _deriveKey(password, salt);
+
+      // Initialize cipher for decryption
+      final cipher = PaddedBlockCipher('AES/CBC/PKCS7');
+      final params =
+          PaddedBlockCipherParameters<CipherParameters, CipherParameters>(
+            ParametersWithIV<KeyParameter>(KeyParameter(key), iv),
+            null,
+          );
+
+      cipher.init(false, params); // false for decryption
+
+      // Decrypt the data
+      final decryptedBytes = cipher.process(encryptedBytes);
+
+      // Convert back to string
+      return utf8.decode(decryptedBytes);
+    } catch (e) {
+      throw Exception('Decryption failed: $e');
+    }
+  }
+
+  /// Derives a key from password and salt using PBKDF2
+  static Uint8List _deriveKey(String password, Uint8List salt) {
+    final pbkdf2 = PBKDF2KeyDerivator(HMac(SHA1Digest(), 64));
+    pbkdf2.init(Pbkdf2Parameters(salt, _derivationIterations, _keySize ~/ 8));
+    return pbkdf2.process(utf8.encode(password));
+  }
+
+  /// Generates 256 bits (32 bytes) of cryptographically secure random data
+  static Uint8List _generate256BitsOfRandomEntropy() {
+    final random = Random.secure();
+    final bytes = Uint8List(32);
+    for (int i = 0; i < 32; i++) {
+      bytes[i] = random.nextInt(256);
+    }
+    return bytes;
+  }
+
+  /// Generates 128 bits (16 bytes) of cryptographically secure random data for IV
+  static Uint8List _generate128BitsOfRandomEntropy() {
+    final random = Random.secure();
+    final bytes = Uint8List(16);
+    for (int i = 0; i < 16; i++) {
+      bytes[i] = random.nextInt(256);
+    }
+    return bytes;
   }
 }

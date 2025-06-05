@@ -123,7 +123,7 @@ class Encrypt {
      * @return ByteArray containing 16 random bytes
      */
     private fun generate128BitsOfRandomEntropy(): ByteArray {
-        val randomBytes = ByteArray(16)
+        val randomBytes = ByteArray(32)
         val secureRandom = SecureRandom()
         secureRandom.nextBytes(randomBytes)
         return randomBytes
