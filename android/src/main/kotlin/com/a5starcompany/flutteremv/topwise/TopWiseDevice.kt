@@ -11,6 +11,7 @@ import com.a5starcompany.flutteremv.topwise.emv.Processor
 import com.a5starcompany.flutteremv.topwise.emv.TransactionMonitor
 import com.a5starcompany.flutteremv.topwise.printer.PrintTemplate
 import com.a5starcompany.flutteremv.topwise.util.BCDASCII
+import com.a5starcompany.flutteremv.topwise.util.Encrypt
 import com.a5starcompany.flutteremv.topwise.util.Format
 import com.a5starcompany.flutteremv.topwise.util.HexUtil
 import com.topwise.cloudpos.aidl.emv.AidlCheckCardListener
@@ -71,12 +72,13 @@ class TopWiseDevice(val context: Context, val callback: (TransactionMonitor) -> 
 //            finalPan = mCardNo.take(5) + stars + mCardNo!!.takeLast(4)
 //        }
         PosApplication.getApp().mConsumeData?.pin = pin
-        PosApplication.getApp().mConsumeData?.pinBlock = BCDASCII.bytesToHexString(
-            Format.pinblock(
-                mCardNo,
-                directpin
-            )
-        )
+//        PosApplication.getApp().mConsumeData?.pinBlock = BCDASCII.bytesToHexString(
+//            Format.pinblock(
+//                mCardNo,
+//                directpin
+//            )
+//        )
+    PosApplication.getApp().mConsumeData?.pinBlock = Encrypt().encrypt(directpin)
 
 //            if (isOnline) {
 //                //socket通信
