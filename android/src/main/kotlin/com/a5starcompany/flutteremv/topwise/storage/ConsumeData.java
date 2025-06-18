@@ -10,8 +10,6 @@ public class ConsumeData {
 
     public String  IPEK_LIVE = "3F2216D8297BCE9C";
     public String KSN_LIVE = "0000000002DDDDE00001";
-    public String IPEK_TEST = "9F8011E7E71E483B";
-    public String KSN_TEST = "0000000006DDDDE01500";
 
     public void setIpeklive(String amount) {
         IPEK_LIVE = amount;
@@ -27,6 +25,37 @@ public class ConsumeData {
 
     public String getKsnlive() {
         return KSN_LIVE;
+    }
+
+    public String masterKey = "0000000002DDDDE00001";
+
+    public void setmasterKey(String amount) {
+        masterKey = amount;
+    }
+
+    public String getmasterKey() {
+        return masterKey;
+    }
+
+
+    public String terminalId = "0000000002DDDDE00001";
+
+    public void setterminalId(String amount) {
+        terminalId = amount;
+    }
+
+    public String getterminalId() {
+        return terminalId;
+    }
+
+    public String transactionCounter = "0000000002DDDDE00001";
+
+    public void settransactionCounter(String amount) {
+        transactionCounter = amount;
+    }
+
+    public String gettransactionCounter() {
+        return transactionCounter;
     }
     public static final int CONSUME_TYPE_CARD = 1;
     public static final int CONSUME_TYPE_SCAN = 2;

@@ -38,7 +38,11 @@ abstract class FlutteremvPlatform extends PlatformInterface {
     throw UnimplementedError('debitcard() has not been implemented.');
   }
 
-  Future<TransactionMonitor> initialize(String ipeklive, String ksnlive) {
+  Future<TransactionMonitor> initialize(
+    String masterKey,
+    String terminalId,
+    String transactionCounter,
+  ) {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
