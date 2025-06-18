@@ -48,14 +48,14 @@ public class ConsumeData {
         return terminalId;
     }
 
-    public String transactionCounter = "0000000002DDDDE00001";
+    public String pinkey = "0000000002DDDDE00001";
 
-    public void settransactionCounter(String amount) {
-        transactionCounter = amount;
+    public void setpinkey(String amount) {
+        pinkey = amount;
     }
 
-    public String gettransactionCounter() {
-        return transactionCounter;
+    public String getpinkey() {
+        return pinkey;
     }
     public static final int CONSUME_TYPE_CARD = 1;
     public static final int CONSUME_TYPE_SCAN = 2;

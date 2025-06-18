@@ -17,16 +17,8 @@ class Flutteremv {
     return FlutteremvPlatform.instance.deviceserialnumber();
   }
 
-  Future<TransactionMonitor> initialize(
-    String masterKey,
-    String terminalId,
-    String transactionCounter,
-  ) async {
-    return FlutteremvPlatform.instance.initialize(
-      masterKey,
-      terminalId,
-      transactionCounter,
-    );
+  Future<TransactionMonitor> initialize(String masterKey, String pinkey) async {
+    return FlutteremvPlatform.instance.initialize(masterKey, pinkey);
   }
 
   void debitcard(String amount) async {

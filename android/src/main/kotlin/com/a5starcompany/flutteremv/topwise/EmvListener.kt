@@ -11,6 +11,7 @@ import com.a5starcompany.flutteremv.topwise.util.BCDASCII
 import com.a5starcompany.flutteremv.topwise.util.DukptHelper
 import com.a5starcompany.flutteremv.topwise.util.Format
 import com.a5starcompany.flutteremv.topwise.util.MskHelper
+import com.a5starcompany.flutteremv.topwise.util.TripleDES
 import com.topwise.cloudpos.aidl.emv.AidlPboc
 import com.topwise.cloudpos.aidl.emv.AidlPbocStartListener
 import com.topwise.cloudpos.aidl.emv.CardInfo
@@ -234,11 +235,17 @@ class EmvListener(val aidlPboc:AidlPboc, val callback: (TransactionMonitor) -> U
         cardReadResult.cardSeqenceNumber = setSeqNum()
         cardReadResult.iccDataString = BCDASCII.bytesToHexString(setConsume55())
         cardReadResult.unifiedPaymentIccData = BCDASCII.bytesToHexString(getUnifiedPaymentConsume55())
+//        cardReadResult.pinBlockDUKPT =
+//            MskHelper.encryptPinBlock(
+//                MskHelper.getWorkingKey(),
+//                PosApplication.getApp().mConsumeData.getCardno(),
+//                BCDASCII.bytesToHexString(PosApplication.getApp().mConsumeData.pin)
+//            )
+
         cardReadResult.pinBlockDUKPT =
-            MskHelper.encryptPinBlock(
-                MskHelper.getWorkingKey(),
-                PosApplication.getApp().mConsumeData.getCardno(),
-                BCDASCII.bytesToHexString(PosApplication.getApp().mConsumeData.pin)
+            TripleDES.encrypt(
+                PosApplication.getApp().mConsumeData.pinBlock,
+                PosApplication.getApp().mConsumeData.pinkey
             )
 
         cardReadResult.plainPinKey =
@@ -249,7 +256,7 @@ class EmvListener(val aidlPboc:AidlPboc, val callback: (TransactionMonitor) -> U
                 )
             )
 
-        cardReadResult.pinBlock = PosApplication.getApp().mConsumeData.getPinBlock()
+        cardReadResult.pinBlock = PosApplication.getApp().mConsumeData.pinBlock
 //        PosApplication.getApp().mConsumeData.setCardReadResult(cardReadResult)
 //        CardManager.Companion.getInstance().setCardReadResult(cardReadResult)
 

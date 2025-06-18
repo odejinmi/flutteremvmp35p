@@ -60,16 +60,8 @@ class MethodChannelFlutteremv extends FlutteremvPlatform {
   }
 
   @override
-  Future<TransactionMonitor> initialize(
-    String masterKey,
-    String terminalId,
-    String transactionCounter,
-  ) async {
-    Map<String, String> args = {
-      "masterKey": masterKey,
-      "terminalId": terminalId,
-      "transactionCounter": transactionCounter,
-    };
+  Future<TransactionMonitor> initialize(String masterKey, String pinkey) async {
+    Map<String, String> args = {"masterKey": masterKey, "pinkey": pinkey};
     var result = await methodChannel.invokeMethod("initialize", args);
     print("plugin initialize");
     print(result);

@@ -69,11 +69,9 @@ class MethodCallHandlerImpl(
                 }
 // Convert the string to a ByteArray
                 val masterKey: String = call.argument<String>("masterKey")!!
-                val terminalId: String = call.argument<String>("terminalId")!!
-                val transactionCounter: String = call.argument<String>("transactionCounter")!!
+                val pinkey: String = call.argument<String>("pinkey")!!
                 PosApplication.getApp().mConsumeData.masterKey = masterKey
-                PosApplication.getApp().mConsumeData.terminalId = terminalId
-                PosApplication.getApp().mConsumeData.transactionCounter = transactionCounter
+                PosApplication.getApp().mConsumeData.pinkey = pinkey
                 val map: MutableMap<String, Any> = mutableMapOf()
                 map["state"] = "1"
                 map["message"] = "Sdk initialise"
