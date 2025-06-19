@@ -17,30 +17,28 @@ object MskHelper {
      * @param transactionCounter Transaction counter
      * @return Working key for encryption
      */
-    fun getWorkingKey(
-        masterKey: String = PosApplication.getApp().mConsumeData.masterKey,
-        terminalId: String = PosApplication.getApp().mConsumeData.terminalId,
-        transactionCounter: String = PosApplication.getApp().mConsumeData.
-
-    ): String {
-        // Pad terminal ID and transaction counter to proper lengths
-        val paddedTerminalId = terminalId.padStart(16, '0').take(16)
-        val paddedCounter = transactionCounter.padStart(16, '0').take(16)
-
-        println("Master Key: $masterKey")
-        println("Terminal ID: $paddedTerminalId")
-        println("Transaction Counter: $paddedCounter")
-
-        // Create diversification data by combining terminal ID and counter
-        val diversificationData = paddedTerminalId + paddedCounter
-        println("Diversification Data: $diversificationData")
-
-        // Generate working key using 3DES encryption
-        val workingKey = generateWorkingKey(masterKey, diversificationData)
-        println("Working Key: $workingKey")
-
-        return workingKey
-    }
+//    fun getWorkingKey(
+//        masterKey: String = PosApplication.getApp().mConsumeData.masterKey,
+//        terminalId: String = PosApplication.getApp().mConsumeData.terminalId,
+//    ): String {
+//        // Pad terminal ID and transaction counter to proper lengths
+//        val paddedTerminalId = terminalId.padStart(16, '0').take(16)
+//        val paddedCounter = transactionCounter.padStart(16, '0').take(16)
+//
+//        println("Master Key: $masterKey")
+//        println("Terminal ID: $paddedTerminalId")
+//        println("Transaction Counter: $paddedCounter")
+//
+//        // Create diversification data by combining terminal ID and counter
+//        val diversificationData = paddedTerminalId + paddedCounter
+//        println("Diversification Data: $diversificationData")
+//
+//        // Generate working key using 3DES encryption
+//        val workingKey = generateWorkingKey(masterKey, diversificationData)
+//        println("Working Key: $workingKey")
+//
+//        return workingKey
+//    }
 
     /**
      * Generate working key using 3DES encryption with diversification data
